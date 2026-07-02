@@ -26,14 +26,14 @@ const storageKey = "palomaLashBookings";
 const whatsappHref = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`;
 
 const proofNotes = [
-  { value: "mapa", label: "desenho definido pelo formato dos olhos, nao por moda pronta" },
+  { value: "mapa", label: "mapeamento definido pelo formato dos olhos, nao por moda pronta" },
   { value: "fio", label: "curvatura, espessura e peso escolhidos para preservar conforto" },
   { value: "rotina", label: "orientacao de manutencao para o resultado continuar bonito" },
 ];
 
 const methodSteps = [
   { title: "Leitura do olhar", text: "Paloma observa formato, inclinacao, espaco da palpebra e expectativa da cliente antes de sugerir o efeito." },
-  { title: "Escolha tecnica", text: "O procedimento e ajustado por curvatura, espessura, volume e desenho para nao pesar nem deformar o olhar." },
+  { title: "Escolha tecnica", text: "O procedimento e ajustado por curvatura, espessura, volume e mapeamento para nao pesar nem deformar o olhar." },
   { title: "Finalizacao limpa", text: "Aplicacao organizada, fios alinhados e explicacao de cuidados para a manutencao render melhor." },
 ];
 
@@ -50,12 +50,31 @@ const testimonials = [
 ];
 
 const gallery = [
-  { src: "/Imagens/trabalho1-Dh6YjpqV.jpg", title: "Volume com curvatura marcada" },
-  { src: "/Imagens/trabalho2-CcspEawA.jpg", title: "Fios alinhados e preenchidos" },
-  { src: "/Imagens/trabalho3-mhShXWlU.jpg", title: "Acabamento de manutencao" },
-  { src: "/Imagens/trabalho4-DUvq4fRB.jpg", title: "Olhar mais expressivo" },
-  { src: "/Imagens/trabalho5-SmO-gHnO.jpg", title: "Resultado real de cliente" },
-];
+  { kind: "image", src: "/Imagens/resultado-volume-curvatura.jpg", title: "Volume com curvatura marcada", wide: true },
+  {
+    kind: "video",
+    src: "/Video/fio_a_fio.mp4",
+    poster: "/Imagens/resultado-fio-a-fio-detalhe.jpg",
+    title: "Fio a fio delicado",
+  },
+  { kind: "image", src: "/Imagens/resultado-volume-brasileiro.jpg", title: "Volume marcante", className: "focus-lashes" },
+  {
+    kind: "video",
+    src: "/Video/volume_brasileiro.mp4",
+    poster: "/Imagens/resultado-volume-brasileiro.jpg",
+    title: "Volume brasileiro",
+  },
+  { kind: "image", src: "/Imagens/resultado-efeito-fox.jpg", title: "Efeito Fox" },
+  {
+    kind: "video",
+    src: "/Video/Model_with_eyelash_extensions_202607012326.mp4",
+    poster: "/Imagens/resultado-cliente-real.jpg",
+    title: "Resultado real em video",
+  },
+] as const;
+
+const getGalleryFigureClassName = (item: (typeof gallery)[number]) =>
+  `${"wide" in item && item.wide ? "wide" : ""} ${"className" in item ? item.className : ""}`.trim();
 
 function getAgendaStats() {
   const today = new Date();
@@ -260,7 +279,7 @@ export default function Home() {
           <div className="hero-copy shell">
             <p className="eyebrow">Beauty & Academy em Cotia</p>
             <h1>
-              <span className="hero-title__first">Cilios com desenho</span>
+              <span className="hero-title__first">Cilios com mapeamento</span>
               <span className="hero-title__second">feito para o seu olhar.</span>
             </h1>
             <p>Paloma Correa combina leitura do rosto, tecnica e acabamento limpo para criar cilios confortaveis, elegantes de perto e coerentes com a rotina de cada cliente.</p>
@@ -272,7 +291,7 @@ export default function Home() {
           <div className="hero-visual" aria-label="Paloma Correa no studio">
             <Image
               className="hero-photo"
-              src="/Imagens/professional-photo-BnAXFWdS.jpg"
+              src="/Imagens/professional-photo-BnAXFWdS.png"
               alt="Paloma segurando escovas de cilios no studio"
               width={900}
               height={1200}
@@ -300,7 +319,7 @@ export default function Home() {
           <div className="shell signature-grid">
             <div className="signature-copy">
               <p className="eyebrow">Metodo Paloma Correa</p>
-              <h2>O desenho do cilio nasce do seu olhar, nao de uma foto pronta.</h2>
+              <h2>O mapeamento do cilio nasce do seu olhar, nao de uma foto pronta.</h2>
               <p>Antes de falar em volume, a Paloma avalia proporcao, direcao dos fios naturais, rotina e expectativa. O resultado fica mais sofisticado quando a tecnica respeita o rosto da cliente.</p>
             </div>
             <div className="signature-panel" aria-label="Pontos do atendimento">
@@ -324,25 +343,20 @@ export default function Home() {
         </section>
 
         <section className="section studio-motion">
-          <div className="shell atelier-grid">
-            <div className="atelier-video">
-              <video autoPlay muted loop playsInline preload="metadata" aria-label="Tour do studio Paloma Lash">
+          <div className="shell studio-motion-copy">
+            <p className="eyebrow">Studio em Cotia</p>
+            <h2>Um espaco pensado para a cliente ver o cuidado antes mesmo do procedimento comecar.</h2>
+            <p>O ambiente precisa transmitir calma, limpeza e atencao aos detalhes. Aqui o video do studio conduz a leitura da secao e mostra onde o atendimento acontece.</p>
+          </div>
+          <div className="shell atelier-stage">
+            <div className="atelier-video atelier-video-featured">
+              <video autoPlay muted loop playsInline preload="auto" aria-label="Tour do studio Paloma Lash">
                 <source src="/Video/studio-tour-DGCfxHiC.mp4" type="video/mp4" />
               </video>
-            </div>
-            <div className="atelier-copy">
-              <p className="eyebrow">Studio em Cotia</p>
-              <h2>Atendimento tranquilo, tecnica precisa e resultado bonito de perto.</h2>
-              <p>Do primeiro contato a finalizacao, a Paloma conduz cada etapa com higiene, orientacao clara e tempo para ajustar o efeito ao seu olhar.</p>
-              <div className="atelier-results">
-                <figure>
-                  <Image src="/Imagens/fio-a-fio-DZQUi106.jpg" alt="Resultado delicado de cilios fio a fio" width={420} height={520} />
-                  <figcaption>fio a fio delicado</figcaption>
-                </figure>
-                <figure>
-                  <Image src="/Imagens/volume-brasileiro-BiO6pEOH.jpg" alt="Resultado de volume brasileiro" width={420} height={520} />
-                  <figcaption>volume brasileiro</figcaption>
-                </figure>
+              <div className="atelier-video-note">
+                <span>recepcao organizada</span>
+                <span>atendimento com tempo</span>
+                <span>higiene visivel no processo</span>
               </div>
             </div>
           </div>
@@ -353,7 +367,8 @@ export default function Home() {
             <div className="service-suite-copy">
               <p className="eyebrow">Escolha pelo efeito no olhar</p>
               <h2>Natural, marcante ou manutencao.</h2>
-              <p>Escolha o caminho inicial. A Paloma ajusta curvatura, volume e desenho no atendimento.</p>
+              <p>Escolha o caminho inicial. A Paloma ajusta curvatura, volume e mapeamento no atendimento.</p>
+              <a className="catalog-link" href="/Catalogo/portfolio-lash-paloma-correa.pdf" target="_blank" rel="noopener noreferrer">Ver catalogo de procedimentos</a>
             </div>
             <div className="service-lanes">
               {serviceGroups.map((group) => (
@@ -386,9 +401,15 @@ export default function Home() {
             <h2>Textura, curvatura e acabamento para a cliente comparar.</h2>
           </div>
           <div className="shell gallery-grid">
-            {gallery.map((item, index) => (
-              <figure className={`${index === 0 ? "wide" : ""} ${item.title === "Fios alinhados e preenchidos" ? "is-rotated" : ""}`} key={item.src}>
-                <Image src={item.src} alt={item.title} width={760} height={760} sizes="(max-width: 800px) 92vw, 32vw" />
+            {gallery.map((item) => (
+              <figure className={getGalleryFigureClassName(item)} key={item.src}>
+                {item.kind === "image" ? (
+                  <Image src={item.src} alt={item.title} width={760} height={760} sizes="(max-width: 800px) 92vw, 32vw" />
+                ) : (
+                  <video autoPlay muted loop playsInline preload="auto" poster={item.poster} aria-label={item.title}>
+                    <source src={item.src} type="video/mp4" />
+                  </video>
+                )}
                 <figcaption>{item.title}</figcaption>
               </figure>
             ))}

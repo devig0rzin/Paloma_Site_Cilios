@@ -54,7 +54,7 @@ export const courseBookingService = {
 export const bookableServices = [...services, courseBookingService] as const;
 
 export const professionals = [
-  { id: "paloma", name: "Paloma", specialties: "Design personalizado, volume brasileiro e acabamento natural" },
+  { id: "paloma", name: "Paloma", specialties: "Mapeamento personalizado, volume brasileiro e acabamento natural" },
 ] as const;
 
 export const availableTimes = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00", "18:30"];

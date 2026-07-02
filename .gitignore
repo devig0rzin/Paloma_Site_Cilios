@@ -8,3 +8,7 @@ desktop-check.png
 mobile-check.png
 .DS_Store
 Thumbs.db
+.codex-video-frames/
+public/NovasImagens/
+serve-paloma-local.ps1
+start-paloma-local.ps1
