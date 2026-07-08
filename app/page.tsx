@@ -210,7 +210,13 @@ export default function Home() {
     };
   }, [date, serviceId, time]);
 
+  const isFirstRenderRef = useRef(true);
+
   useEffect(() => {
+    if (isFirstRenderRef.current) {
+      isFirstRenderRef.current = false;
+      return;
+    }
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
     bookingPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [step, result]);

@@ -1944,6 +1944,9 @@ a:focus-visible {
   }
 
   .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-height: auto;
     width: 100%;
     padding: 96px 0 62px;
@@ -1954,6 +1957,8 @@ a:focus-visible {
   .hero-actions {
     width: min(100% - 24px, 390px) !important;
     max-width: min(100% - 24px, 390px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .hero-copy {
@@ -1968,6 +1973,7 @@ a:focus-visible {
   }
 
   .hero-actions {
+    display: flex;
     align-items: center;
     justify-content: center;
   }
