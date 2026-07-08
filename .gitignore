@@ -4,6 +4,7 @@
 node_modules/
 next-*.log
 *.log
+logs/
 desktop-check.png
 mobile-check.png
 .DS_Store

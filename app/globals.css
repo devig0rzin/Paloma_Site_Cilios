@@ -67,6 +67,7 @@ a {
 
 img {
   display: block;
+  max-width: 100%;
 }
 
 h1,
@@ -102,6 +103,15 @@ p {
 .shell {
   width: min(1180px, calc(100% - 36px));
   margin: 0 auto;
+}
+
+#home,
+#profissional,
+#servicos,
+#galeria,
+#curso,
+#agenda {
+  scroll-margin-top: 108px;
 }
 
 .site-header {
@@ -1261,6 +1271,8 @@ a:focus-visible {
 
 .success-state canvas,
 .pix-preview canvas {
+  width: min(190px, 100%) !important;
+  height: auto !important;
   border-radius: 14px;
   background: white;
 }
@@ -1585,6 +1597,8 @@ a:focus-visible {
 
 .summary strong {
   color: var(--cream);
+  min-width: 0;
+  overflow-wrap: anywhere;
   text-align: right;
 }
 
@@ -1868,19 +1882,30 @@ a:focus-visible {
 }
 
 @media (max-width: 700px) {
+  #home,
+  #profissional,
+  #servicos,
+  #galeria,
+  #curso,
+  #agenda {
+    scroll-margin-top: 112px;
+  }
+
   .shell {
     width: min(100% - 24px, 1180px);
   }
 
   .site-header {
-    padding-top: 8px;
+    padding: 8px 0 0;
   }
 
   .nav {
-    min-height: 56px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 54px;
     gap: 8px;
     overflow: hidden;
-    padding: 8px;
+    padding: 7px 8px;
     border-radius: 16px;
   }
 
@@ -1893,8 +1918,9 @@ a:focus-visible {
   }
 
   .nav-links {
-    flex: 0 0 auto;
-    margin-left: auto;
+    min-width: 0;
+    justify-self: end;
+    margin-left: 0;
   }
 
   .nav-links .nav-cta {
@@ -1909,17 +1935,18 @@ a:focus-visible {
 
   .brand {
     min-width: 0;
+    overflow: hidden;
     font-size: 0.95rem;
   }
 
   .brand-logo img {
-    width: 168px;
+    width: clamp(142px, 43vw, 168px);
   }
 
   .hero {
     min-height: auto;
     width: 100%;
-    padding: 104px 0 72px;
+    padding: 96px 0 62px;
   }
 
   .hero .shell,
@@ -2004,7 +2031,15 @@ a:focus-visible {
   }
 
   .section {
-    padding: 72px 0;
+    padding: 62px 0;
+  }
+
+  .eyebrow {
+    margin-bottom: 10px;
+  }
+
+  p {
+    line-height: 1.62;
   }
 
   .service-grid,
@@ -2050,7 +2085,8 @@ a:focus-visible {
   }
 
   .course-portrait {
-    min-height: 360px;
+    min-height: auto;
+    aspect-ratio: 4 / 5;
   }
 
   .course-content {
@@ -2127,13 +2163,93 @@ a:focus-visible {
   }
 
   .booking-panel {
+    position: relative;
+    z-index: 60;
     min-height: auto;
-    padding: 18px;
+    padding: 16px;
     border-radius: 10px;
+  }
+
+  .booking-copy h2 {
+    margin-bottom: 16px;
   }
 
   .booking-assurance {
     width: 100%;
+    margin-top: 22px;
+    padding: 16px;
+  }
+
+  .wizard-top {
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .wizard-top button {
+    min-height: 46px;
+    border-radius: 12px;
+  }
+
+  .wizard-step {
+    gap: 14px;
+  }
+
+  .wizard-step h3,
+  .success-state h3 {
+    margin-bottom: 0;
+    font-size: 1.28rem;
+  }
+
+  .booking-type-grid button,
+  .choice-list button,
+  .course-choice {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .field input,
+  .field textarea {
+    min-height: 54px;
+    border-radius: 13px;
+    font-size: 16px;
+  }
+
+  .time-grid {
+    gap: 8px;
+  }
+
+  .time-grid button,
+  .slot-skeleton {
+    min-height: 64px;
+    border-radius: 12px;
+  }
+
+  .availability-note,
+  .notice {
+    border-radius: 12px;
+  }
+
+  .deposit-reveal {
+    padding: 22px 16px;
+  }
+
+  .success-state {
+    min-height: auto;
+    padding: 10px 0 4px;
+  }
+
+  .wizard-actions {
+    position: sticky;
+    bottom: 10px;
+    z-index: 80;
+    gap: 10px;
+    margin: 22px -4px -4px;
+    padding: 10px 4px 4px;
+    background: linear-gradient(180deg, rgba(28, 19, 22, 0), #1c1316 34%);
+  }
+
+  .wizard-actions .button {
+    min-height: 52px;
   }
 
   .summary p,
@@ -2142,26 +2258,100 @@ a:focus-visible {
     flex-direction: column;
   }
 
+  .summary p {
+    gap: 6px;
+    padding: 14px;
+  }
+
+  .summary strong {
+    text-align: left;
+  }
+
+  .footer-grid {
+    gap: 22px;
+  }
+
   .footer-cta {
     width: 100%;
   }
 
   .whatsapp-float {
-    right: 14px;
-    bottom: 14px;
-    width: 56px;
-    height: 56px;
+    z-index: 50;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: 52px;
+    height: 52px;
+  }
+
+  .whatsapp-float svg {
+    width: 27px;
+    height: 27px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    gap: 6px;
+  }
+
+  .brand-logo img {
+    width: clamp(132px, 36vw, 148px);
+  }
+
+  .nav-links .nav-cta {
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: minmax(260px, 70vw);
+    gap: 10px;
+  }
+
+  .gallery-grid figure,
+  .gallery-grid figure.wide,
+  .gallery-grid figure:nth-child(4) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .gallery-grid figcaption {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    max-width: calc(100% - 16px);
+    padding: 8px 10px;
+    font-size: 0.72rem;
+  }
+
+  .booking-panel {
+    padding: 14px;
+  }
+
+  .booking-type-grid strong {
+    font-size: 1.08rem;
+  }
+
+  .course-highlights span {
+    min-height: 58px;
+  }
+
+  .footer {
+    padding-bottom: 82px;
   }
 }
 
 @media (max-width: 420px) {
   .brand-logo img {
-    width: 142px;
+    width: 128px;
   }
 
   .nav-links .nav-cta {
-    padding: 8px 10px;
-    font-size: 0.82rem;
+    min-height: 40px;
+    padding: 8px;
+    font-size: 0.8rem;
   }
 
   h1 {
@@ -2179,11 +2369,6 @@ a:focus-visible {
     grid-template-columns: 1fr;
   }
 
-  .gallery-grid {
-    grid-auto-rows: 172px;
-    gap: 8px;
-  }
-
   .atelier-video-featured,
   .atelier-video-featured video {
     min-height: 340px;
@@ -2197,15 +2382,6 @@ a:focus-visible {
   .atelier-video-note span {
     padding: 8px 10px;
     font-size: 0.62rem;
-  }
-
-  .gallery-grid figcaption {
-    right: 6px;
-    bottom: 6px;
-    left: 6px;
-    max-width: calc(100% - 12px);
-    padding: 7px 8px;
-    font-size: 0.72rem;
   }
 
   .time-grid {
