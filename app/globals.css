@@ -1956,6 +1956,22 @@ a:focus-visible {
     max-width: min(100% - 24px, 390px) !important;
   }
 
+  .hero-copy {
+    text-align: center;
+  }
+
+  .hero-copy .eyebrow,
+  .hero-copy h1,
+  .hero-copy p:not(.eyebrow) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    align-items: center;
+    justify-content: center;
+  }
+
   .hero-visual {
     width: min(100% - 24px, 390px) !important;
     max-width: min(100% - 24px, 390px) !important;
@@ -2113,15 +2129,21 @@ a:focus-visible {
   .motion-video video,
   .atelier-video,
   .atelier-video video {
-    min-height: 390px;
-    height: 390px;
+    min-height: 420px;
+    height: 420px;
     border-radius: 10px;
+  }
+
+  .atelier-video-featured {
+    max-width: 100%;
+    padding: 6px;
   }
 
   .atelier-video-featured,
   .atelier-video-featured video {
-    min-height: 440px;
-    height: 440px;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .studio-motion-copy {
@@ -2367,12 +2389,6 @@ a:focus-visible {
 
   .hero-strip {
     grid-template-columns: 1fr;
-  }
-
-  .atelier-video-featured,
-  .atelier-video-featured video {
-    min-height: 340px;
-    height: 340px;
   }
 
   .atelier-video-note {

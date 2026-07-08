@@ -1,4 +1,4 @@
-import { depositAmount } from "@/lib/studio-data";
+import { PRE_BOOKING_FEE } from "@/lib/studio-data";
 import { buildBookingPixPayload } from "./booking-pix";
 import { sendBookingEmail } from "./booking-email";
 import { sendBookingToSchedule } from "./booking-schedule";
@@ -35,5 +35,5 @@ export async function createBooking(payload: Partial<BookingPayload>): Promise<B
     console.log(`Booking saved, but email failed: ${formatIntegrationError(error)}`);
   }
 
-  return { ok: true, bookingId, emailSent, scheduleSent, pixPayload, amount: depositAmount };
+  return { ok: true, bookingId, emailSent, scheduleSent, pixPayload, amount: PRE_BOOKING_FEE };
 }

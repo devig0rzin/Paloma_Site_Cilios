@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { QRCodeCanvas } from "qrcode.react";
-import { useEffect, useMemo, useState } from "react";
-import { bookableServices, contact, course, courseBookingService, depositAmount, formatDate as formatStudioDate, isClosedDay, services } from "@/lib/studio-data";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { bookableServices, contact, course, courseBookingService, PALOMA_WORKING_DAYS, PRE_BOOKING_FEE, formatDate as formatStudioDate, isClosedDay, services } from "@/lib/studio-data";
 import { formatCurrency } from "@/lib/pix";
 
 type Step = 1 | 2 | 3 | 4 | 5;
@@ -76,17 +76,36 @@ const gallery = [
 const getGalleryFigureClassName = (item: (typeof gallery)[number]) =>
   `${"wide" in item && item.wide ? "wide" : ""} ${"className" in item ? item.className : ""}`.trim();
 
-function getAgendaStats() {
-  const today = new Date();
-  const start = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-  const lastDay = new Date(today.getFullYear(), today.getMonth() + 2, 0);
-  const monthLabel = new Intl.DateTimeFormat("pt-BR", { month: "long" }).format(start);
-  const daysUntilMonthEnd = lastDay.getDate();
-  let agendaDays = 0;
+const AGENDA_TIMEZONE = "America/Sao_Paulo";
 
-  for (let day = new Date(start); day <= lastDay; day.setDate(day.getDate() + 1)) {
-    const dateKey = day.toISOString().split("T")[0];
-    if (!isClosedDay(dateKey)) agendaDays += 1;
+// Data/hora atuais no fuso de Brasilia, independente do fuso do servidor/navegador.
+function getSaoPauloDateParts(reference = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: AGENDA_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(reference);
+  const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return { year: Number(map.year), month: Number(map.month), day: Number(map.day) };
+}
+
+function getDaysInMonth(year: number, month: number) {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
+function getAgendaStats() {
+  const { year, month, day } = getSaoPauloDateParts();
+  const totalDaysInMonth = getDaysInMonth(year, month);
+  const daysUntilMonthEnd = totalDaysInMonth - day + 1;
+  const monthLabel = new Intl.DateTimeFormat("pt-BR", { month: "long", timeZone: "UTC" }).format(
+    new Date(Date.UTC(year, month - 1, 1)),
+  );
+
+  let agendaDays = 0;
+  for (let currentDay = day; currentDay <= totalDaysInMonth; currentDay += 1) {
+    const dayOfWeek = new Date(Date.UTC(year, month - 1, currentDay)).getUTCDay();
+    if (PALOMA_WORKING_DAYS.includes(dayOfWeek)) agendaDays += 1;
   }
 
   return {
@@ -138,6 +157,7 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<BookingResult | null>(null);
   const [copied, setCopied] = useState(false);
+  const bookingPanelRef = useRef<HTMLDivElement>(null);
 
   const selectedService = bookableServices.find((service) => service.id === serviceId) || services[0];
   const isCourseBooking = bookingType === "curso";
@@ -189,6 +209,11 @@ export default function Home() {
       isActive = false;
     };
   }, [date, serviceId, time]);
+
+  useEffect(() => {
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    bookingPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [step, result]);
 
   function validateCurrentStep() {
     setNotice("");
@@ -472,12 +497,12 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="booking-panel">
+            <div className="booking-panel" ref={bookingPanelRef}>
               {result ? (
                 <div className="success-state">
                   <span className="status-pill">Reserva criada</span>
                   <h3>{result.bookingId}</h3>
-                  <p>Agora e so pagar o sinal de {formatCurrency(depositAmount)} pelo Pix para garantir o horario.</p>
+                  <p>Agora e so pagar o sinal de {formatCurrency(PRE_BOOKING_FEE)} pelo Pix para garantir o horario.</p>
                   <QRCodeCanvas value={result.pixPayload} size={190} includeMargin />
                   <button className="button primary" type="button" onClick={() => copyPix(result.pixPayload)}>{copied ? "Pix copiado" : "Copiar Pix"}</button>
                   <small>{result.emailSent || result.scheduleSent ? "A Paloma recebeu os dados da reserva." : "Reserva criada. Configure o webhook ou e-mail no .env para envio automatico."}</small>
@@ -575,9 +600,9 @@ export default function Home() {
                   {step === 5 && (
                     <div className="wizard-step">
                       <h3>Ultima etapa: sinal da reserva</h3>
-                      <p className="muted">Para segurar {isCourseBooking ? "a conversa sobre a turma e o atendimento do curso" : "o horario escolhido"}, o site gera um Pix de {formatCurrency(depositAmount)} e envia os dados da reserva para a Paloma.</p>
+                      <p className="muted">Para segurar {isCourseBooking ? "a conversa sobre a turma e o atendimento do curso" : "o horario escolhido"}, o site gera um Pix de {formatCurrency(PRE_BOOKING_FEE)} e envia os dados da reserva para a Paloma.</p>
                       <div className="deposit-reveal">
-                        <strong>{formatCurrency(depositAmount)}</strong>
+                        <strong>{formatCurrency(PRE_BOOKING_FEE)}</strong>
                         <span>O QR Code real aparece depois da confirmacao, com o numero da sua reserva.</span>
                       </div>
                     </div>

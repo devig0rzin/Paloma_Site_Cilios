@@ -1,4 +1,4 @@
-export const depositAmount = 1;
+export const PRE_BOOKING_FEE = 30;
 
 export const contact = {
   whatsapp: "5511989927677",
@@ -59,9 +59,12 @@ export const professionals = [
 
 export const availableTimes = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00", "18:30"];
 
+// Dias da semana em que a Paloma atende (0 = domingo ... 6 = sabado). Hoje: terca a sabado.
+export const PALOMA_WORKING_DAYS = [2, 3, 4, 5, 6];
+
 export function isClosedDay(date: string) {
   const day = new Date(`${date}T00:00:00`).getDay();
-  return day === 0 || day === 1;
+  return !PALOMA_WORKING_DAYS.includes(day);
 }
 
 export function getAvailableTimesForDate(date: string) {

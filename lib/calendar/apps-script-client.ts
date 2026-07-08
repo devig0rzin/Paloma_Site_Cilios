@@ -1,5 +1,5 @@
 import { env } from "@/lib/config/env";
-import { bookableServices, courseBookingService, depositAmount } from "@/lib/studio-data";
+import { bookableServices, courseBookingService, PRE_BOOKING_FEE } from "@/lib/studio-data";
 import type { BookingPayload } from "@/lib/booking/types";
 
 function readStringArray(data: unknown, key: string) {
@@ -53,7 +53,7 @@ export async function createCalendarBooking(booking: BookingPayload, bookingId: 
       date: booking.date,
       time: booking.time,
       price: service?.price || 0,
-      depositAmount,
+      depositAmount: PRE_BOOKING_FEE,
       pixPayload,
       notes: booking.notes || "",
       createdAt: new Date().toISOString(),
